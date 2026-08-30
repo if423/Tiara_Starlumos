@@ -40,3 +40,8 @@ logs/
 # 系统文件
 .DS_Store
 Thumbs.db
+
+# 其他
+requirements.md
+design.md
+todo.md
