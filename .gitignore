@@ -1,0 +1,42 @@
+# 环境变量 / 密钥(含真实 token,绝不能提交)
+.env
+.env.*
+!.env.example
+
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# Python 缓存与字节码
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 打包产物
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# 测试 / 类型检查 / lint 缓存
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# NoneBot2 运行时数据(插件数据、缓存等)
+data/
+logs/
+*.log
+
+# IDE / 编辑器
+.idea/
+.vscode/
+*.swp
+
+# 系统文件
+.DS_Store
+Thumbs.db

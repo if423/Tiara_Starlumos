@@ -1,0 +1,13 @@
+[project]
+name = "tiara-starlumos"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "nb-cli>=1.7.4",
+    "nonebot-adapter-bilibili>=0.0.7",
+    "nonebot-adapter-console>=0.10.0",
+    "nonebot-adapter-qq>=1.7.2",
+    "nonebot2[fastapi,httpx,quart,websockets]>=2.5.0",
+]
