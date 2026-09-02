@@ -7,7 +7,7 @@ from nonebot.adapters.bilibili_live import Adapter as BillBill_liveAdapter
 from nonebot.adapters.satori import Adapter as SatoriAdapter  # 避免重复命名
 
 # 初始化 NoneBot
-nonebot.init()
+nonebot.init(_env_file=".env")
 
 # 注册适配器
 driver = nonebot.get_driver()
