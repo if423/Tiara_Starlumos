@@ -2,6 +2,7 @@
 .env
 .env.*
 !.env.example
+!.env.dev.example
 
 # 虚拟环境
 .venv/
@@ -29,6 +30,7 @@ htmlcov/
 
 # NoneBot2 运行时数据(插件数据、缓存等)
 data/
+resources/
 logs/
 *.log
 
