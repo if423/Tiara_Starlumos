@@ -2,8 +2,14 @@ from nonebot import get_plugin_config, on_command
 from nonebot.adapters import Event, Message
 from nonebot.params import CommandArg
 from nonebot.rule import Rule, to_me
+from nonebot import require
+
+require("nonebot_plugin_alconna")
+from arclet.alconna import Alconna, Args
+from nonebot_plugin_alconna import Match, on_alconna
 
 from .config import Config
+from .service import get_plugins
 
 plugin_config = get_plugin_config(Config).bot_help
 
@@ -32,4 +38,5 @@ async def handle_function(args: Message = CommandArg()):
     if location := args.extract_plain_text():
         await bot_help.finish(f"")
     else:
-        await bot_help.finish("这里是帮助菜单,但是还没写")
+        plugins = await get_plugins()
+        await bot_help.finish(f"插件:\n{plugins}")
