@@ -13,10 +13,12 @@ dependencies = [
     "nonebot-adapter-console>=0.10.0",
     "nonebot-adapter-satori>=1.3.0",
     "nonebot-adapter-wxclaw>=0.2.1",
+    "nonebot-plugin-alconna>=0.62.1",
     "nonebot-plugin-localstore>=0.7.4",
     "nonebot-plugin-orm[postgresql]>=0.8.3",
     "nonebot-plugin-permission>=0.3.1",
     "nonebot2[fastapi,httpx,quart,websockets]>=2.5.0",
+    "pytz>=2026.3.post1",
     "sqlalchemy>=2.0.52",
 ]
 
@@ -33,8 +35,12 @@ default = true
 
 [tool.nonebot]
 plugin_dirs = ["Tiara_bot/plugins"]
-plugins = [
-	"nonebot_plugin_orm",
-	"nonebot_plugin_localstore",
-	]
+builtin_plugins = []
 
+[tool.nonebot.plugins]
+"@local" = []
+nonebot-plugin-orm = ["nonebot_plugin_orm"]
+nonebot-plugin-localstore = ["nonebot_plugin_localstore"]
+
+[tool.nonebot.adapters]
+"@local" = []

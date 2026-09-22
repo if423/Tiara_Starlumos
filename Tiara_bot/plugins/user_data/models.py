@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import Optional
+from nonebot import require
 
+require("nonebot_plugin_orm")
 from nonebot_plugin_orm import Model
 from sqlalchemy import (
     BigInteger,
@@ -121,3 +123,4 @@ class UserGroup(Model):
     # 建立关系
     user: Mapped["User"] = relationship(back_populates="groups")
     group: Mapped["Group"] = relationship(back_populates="members")
+

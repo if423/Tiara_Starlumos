@@ -10,6 +10,7 @@ from nonebot.plugin import PluginMetadata
 from nonebot_plugin_orm import async_scoped_session
 from .config import Config
 from .service import get_sign_in
+from . import models
 
 __plugin_meta__ = PluginMetadata(
     name="sign",

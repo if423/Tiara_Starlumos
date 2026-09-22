@@ -1318,6 +1318,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pytz"
+version = "2026.3.post1"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple/" }
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/fb/48/fb042503b6ca6cd271261dc559fd6432f7d8c713153e9ec5c591af4dfc1c/pytz-2026.3.post1.tar.gz", hash = "sha256:2211d3fcf9a797d3405cac96ac7f61d80e6a644f72a3309607282fe8a2010c5d", size = 319745, upload-time = "2026-07-25T15:12:07.385Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/0f/7b/39c34ca613b0b198cb866466651b26b045e2009864c5183c979a3b83f383/pytz-2026.3.post1-py2.py3-none-any.whl", hash = "sha256:dd95840dd199baea12d9cc096a1d452caa6596a1c1e4b5f3dbd1541855d5e815", size = 508283, upload-time = "2026-07-25T15:12:05.782Z" },
+]
+
+[[package]]
 name = "pyyaml"
 version = "6.0.3"
 source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple/" }
@@ -1525,10 +1534,12 @@ dependencies = [
     { name = "nonebot-adapter-console" },
     { name = "nonebot-adapter-satori" },
     { name = "nonebot-adapter-wxclaw" },
+    { name = "nonebot-plugin-alconna" },
     { name = "nonebot-plugin-localstore" },
     { name = "nonebot-plugin-orm", extra = ["postgresql"] },
     { name = "nonebot-plugin-permission" },
     { name = "nonebot2", extra = ["fastapi", "httpx", "quart", "websockets"] },
+    { name = "pytz" },
     { name = "sqlalchemy" },
 ]
 
@@ -1548,10 +1559,12 @@ requires-dist = [
     { name = "nonebot-adapter-console", specifier = ">=0.10.0" },
     { name = "nonebot-adapter-satori", specifier = ">=1.3.0" },
     { name = "nonebot-adapter-wxclaw", specifier = ">=0.2.1" },
+    { name = "nonebot-plugin-alconna", specifier = ">=0.62.1" },
     { name = "nonebot-plugin-localstore", specifier = ">=0.7.4" },
     { name = "nonebot-plugin-orm", extras = ["postgresql"], specifier = ">=0.8.3" },
     { name = "nonebot-plugin-permission", specifier = ">=0.3.1" },
     { name = "nonebot2", extras = ["fastapi", "httpx", "quart", "websockets"], specifier = ">=2.5.0" },
+    { name = "pytz", specifier = ">=2026.3.post1" },
     { name = "sqlalchemy", specifier = ">=2.0.52" },
 ]
 

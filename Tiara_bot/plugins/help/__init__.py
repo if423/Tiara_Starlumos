@@ -6,7 +6,7 @@ from nonebot import require
 
 require("nonebot_plugin_alconna")
 from arclet.alconna import Alconna, Args
-from nonebot_plugin_alconna import Match, on_alconna
+from nonebot_plugin_alconna import Match, on_alconna, AlconnaMatch
 
 from .config import Config
 from .service import get_plugins
@@ -23,20 +23,34 @@ async def is_enadle() -> bool:
 async def is_blacklisted(event: Event) -> bool:
     return True  # event.get_user_id() not in BLACKLIST
 
-
-bot_help = on_command(
-    "帮助",
-    rule=to_me() & is_enadle & is_blacklisted,
-    aliases={"help", "使用帮助"},
-    priority=plugin_config.command_priority,
-    block=True,
-)
-
-
+bot_help = on_alconna(
+        Alconna("帮助", Args["plugin_name?", str]),
+        aliases={"help", "使用帮助"},
+        rule=to_me() & is_enadle & is_blacklisted,
+        priority=plugin_config.command_priority,
+        block=True
+        )
 @bot_help.handle()
-async def handle_function(args: Message = CommandArg()):
-    if location := args.extract_plain_text():
-        await bot_help.finish(f"")
-    else:
-        plugins = await get_plugins()
+async def handle_help(plugin_name: Match[str] = AlconnaMatch("plugin_name")):
+    plugins = await get_plugins()
+    if not plugin_name.available:
         await bot_help.finish(f"插件:\n{plugins}")
+
+
+# bot_help = on_command(
+#     "帮助",
+#     rule=to_me() & is_enadle & is_blacklisted,
+#     aliases={"help", "使用帮助"},
+#     priority=plugin_config.command_priority,
+#     block=True,
+# )
+
+
+# @bot_help.handle()
+# async def handle_function(args: Message = CommandArg()):
+#     if location := args.extract_plain_text():
+#         await bot_help.finish(f"")
+#     else:
+#         plugins = await get_plugins()
+#         await bot_help.finish(f"插件:\n{plugins}")
+

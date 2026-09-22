@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>签到成功</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+	        body {
+			font-family: 'Noto Sans CJK SC', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 100vh;
+			padding: 20px;
+			/* 背景图动态注入 */
+			background-image: url('{{ background_url }}');
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		/* 毛玻璃卡片主体 */
+		.sign-card {
+			width: 460px;
+			background: rgba(20, 24, 40, 0.55); /* 深色半透明底，适配所有背景 */
+			backdrop-filter: blur(20px);
+			-webkit-backdrop-filter: blur(20px);
+			border-radius: 24px;
+			padding: 40px 32px 32px;
+			box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			text-align: center;
+			position: relative;
+			overflow: hidden;
+		}
+
+		/* 顶部光晕装饰 */
+		.sign-card::after {
+			content: '';
+			position: absolute;
+			top: -50px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 250px;
+			height: 150px;
+			background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+			pointer-events: none;
+		}
+
+		/* 头像 */
+		.avatar-wrapper {
+			width: 90px;
+			height: 90px;
+			margin: 0 auto 16px;
+			border-radius: 50%;
+			padding: 3px;
+			background: linear-gradient(135deg, #f6d365, #fda085);
+			box-shadow: 0 8px 24px rgba(253, 160, 133, 0.4);
+			position: relative;
+			z-index: 1;
+		}
+
+		.avatar {
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+			object-fit: cover;
+			display: block;
+			background: #eee;
+		}
+
+		/* 昵称 */
+		.nickname {
+			font-size: 22px;
+			font-weight: 700;
+			color: #ffffff;
+			margin-bottom: 6px;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+			position: relative;
+			z-index: 1;
+		}
+
+		/* 签到成功提示 */
+		.title {
+			font-size: 15px;
+			color: rgba(255, 255, 255, 0.7);
+			letter-spacing: 2px;
+			margin-bottom: 26px;
+			position: relative;
+			z-index: 1;
+		}
+
+		.title span {
+			color: #fda085;
+			font-weight: 600;
+		 }
+
+		/* 金币区域 */
+		.gold-row {
+			display: flex;
+			gap: 16px;
+			margin-bottom: 24px;
+			position: relative;
+			z-index: 1;
+		}
+
+		.gold-box {
+			flex: 1;
+			border-radius: 18px;
+			padding: 18px 10px 14px;
+			text-align: center;
+		}
+
+		.gold-box.today {
+			background: linear-gradient(135deg, rgba(255, 244, 224, 0.9), rgba(255, 230, 199, 0.9));
+			border: 1px solid rgba(253, 160, 133, 0.4);
+		}
+
+		.gold-box.total {
+			background: linear-gradient(135deg, rgba(232, 244, 255, 0.9), rgba(214, 235, 255, 0.9));
+			border: 1px solid rgba(100, 160, 255, 0.3);
+		}
+
+		.gold-label {
+			font-size: 13px;
+			color: #666;
+			margin-bottom: 6px;
+			font-weight: 500;
+		}
+
+		.gold-value {
+			font-size: 34px;
+			font-weight: 800;
+			line-height: 1.1;
+		}
+
+		.gold-box.today .gold-value {
+			color: #e8833a;
+		}
+
+		.gold-box.total .gold-value {
+			color: #3a7bd5;
+		}
+
+		.gold-unit {
+			font-size: 14px;
+			font-weight: 500;
+			margin-left: 2px;
+			opacity: 0.7;
+		}
+
+		/* 连续签到徽章 */
+		.streak-badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			background: linear-gradient(135deg, #4ecdc4, #44b3aa);
+			color: #ffffff;
+			padding: 10px 28px;
+			border-radius: 50px;
+			font-size: 16px;
+			font-weight: 600;
+			box-shadow: 0 6px 18px rgba(78, 205, 196, 0.4);
+			position: relative;
+			z-index: 1;
+			margin-bottom: 20px;
+		}
+		
+		.streak-badge .fire {
+			font-size: 20px;
+			line-height: 1;
+		}
+
+		/* 底部提示 */
+		.footer {
+			font-size: 12px;
+			color: rgba(255, 255, 255, 0.4);
+			letter-spacing: 1px;
+			position: relative;
+			z-index: 1;
+		}
+	</style>
+</head>
+<body>
+	<div class="sign-card">
+		<!-- 头像 -->
+		<div class="avatar-wrapper">
+		<img class="avatar" src="{{ avatar_url }}" alt="头像" onerror="this.src='https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f464.png'">
+		</div>
+		
+		<!-- 昵称 -->
+		<div class="nickname">{{ nickname }}</div>
+
+		<!-- 签到成功 -->
+		<div class="title">签到成功<span></span></div>
+
+		<!-- 金币区域 -->
+		<div class="gold-row">
+			<div class="gold-box today">
+				<div class="gold-label">本次获得</div>
+				<div class="gold-value">+{{ today_gold }}<span class="gold-unit">币</span></div>
+			</div>
+			<div class="gold-box total">
+				<div class="gold-label">金币总数</div>
+				<div class="gold-value">{{ all_gold }}<span class="gold-unit">币</span></div>
+			</div>
+		</div>
+
+		<!-- 连续签到 -->
+		<div class="streak-badge">
+			<span class="fire">🔥</span>
+			连续签到 {{ streak }} 天
+		</div>
+
+		<!-- 底部 -->
+		<div class="footer">继续保持，明天再来~</div>
+	</div>
+</body>
+</html>
+

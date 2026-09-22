@@ -19,8 +19,9 @@ driver.register_adapter(SatoriAdapter)
 # 在这里加载插件
 nonebot.load_builtin_plugins("echo")  # 内置插件
 # nonebot.load_plugin("thirdparty_plugin")  # 第三方插件
+nonebot.load_plugins("Tiara_bot/plugins")    # 基础插件
 # nonebot.load_plugins("Tiara_bot/plugins")  # 马巨擘
-nonebot.load_plugins("Tiara_bot/plugins")  # 亚述巴尼拔
+# nonebot.load_plugins("Tiara_bot/plugins")  # 亚述巴尼拔
 # nonebot.load_plugins("Tiara_bot/plugins")  # 尼禄
 
 if __name__ == "__main__":
