@@ -86,4 +86,33 @@ async def user_updata(
 
     return user, group, user_group
         
+async def member_added(user_id: int | str, group_id: int | str):
+    user_id = int(user_id)
+    group_id = int(group_id)
+
+    stmt_ug = select(UserGroup).where(UserGroup.user_id == user_id, UserGroup.group_id == group_id)
+    user_group = await session.scalar(stm_ug)
+
+    if user_group:
+        if not user_group.is_active:
+            user_group.is_active = True
+            user_group.left_at = None
+            user_group.joined_at = datetime.now(pytz.timezone("Asia/Shanghai"))
+
+            await session.commit()
+
+async def member_removed(user_id: int | str, group_id: int | str):
+    user_id = int(user_id)
+    group_id = int(group_id)
+
+    stmt_ug = select(UserGroup).where(UserGroup.user_id == usser_id, UserGroup.group_id == group_id)
+    user_group = await session.scalar(stm_ug)
+
+    if user_group:
+        if user_group.is_active:
+            user_group.is_active = False
+            user_group.left_at = datetime.now(pytz.timezone("Asia/Shanghai"))
+            user_group.joined_at = None
+            
+            await session.commit()
 

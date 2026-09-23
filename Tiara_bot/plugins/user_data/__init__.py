@@ -1,14 +1,18 @@
-from nonebot import require, on, on_command, logger
+from nonebot import require, on, on_command, on_notice, logger
 
 require("nonebot_plugin_localstore")
 require("nonebot_plugin_orm")
 
-from nonebot.adapters.satori import Bot, MessageEvent
+from nonebot.adapters.satori import Bot, MessageEvent, Message
 from nonebot.plugin import PluginMetadata
+from nonebto.adapters.satori.event import (
+    GuildMemberAddedEvent,
+    GuildMemberRemoveEvent
+)
 
 from nonebot_plugin_orm import async_scoped_session
 from . import models
-from .service import user_updata
+from .service import user_updata, member_added, member_removed
 
 __plugin_meta__ = PluginMetadata(
     name="user_data",
@@ -46,3 +50,23 @@ async def handle_function(bot: Bot, event: MessageEvent, session: async_scoped_s
     except Exception as e:
         logger.error(f"用户/群组信息同步失败:{e}")
 
+# 监听群成员加入事件
+member_added = on_notice(rule=lambda event: isinstance(event, GuildMemberAddedEvent))
+
+@member_added.handle()
+async def handle_member_added(bot: Bot, event: GuildMemberAddedEvent):
+    user = event.user
+    guild = event.guild
+    member_added()
+    await member_added.send(f"欢迎新成员 {user.name} (ID: {user.id}) 加入群组 {guild.name}!")
+
+# 监听群成员退出事件
+member_removed = on_notice(rule=lambda event: isinstance(event, GuildMemberRemovedEvent))
+
+@member_removed.handle()
+async def handle_member_removed(bot: Bot, event: GuildMemberRemovedEvent):
+    user = event.user
+    operator = event.operator  # 执行移除操作的用户（如果是主动退群，可能与 user 相同）
+    guild = event.guild
+    member_removed()
+    await bot.send(f"成员 {user.name} (ID: {user.id}) 离开了群组 {guild.name}。"f"操作者: {operator.name if operator else '未知'}")
