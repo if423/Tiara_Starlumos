@@ -5,9 +5,9 @@ require("nonebot_plugin_orm")
 
 from nonebot.adapters.satori import Bot, MessageEvent, Message
 from nonebot.plugin import PluginMetadata
-from nonebto.adapters.satori.event import (
+from nonebot.adapters.satori.event import (
     GuildMemberAddedEvent,
-    GuildMemberRemoveEvent
+    GuildMemberRemovedEvent
 )
 
 from nonebot_plugin_orm import async_scoped_session

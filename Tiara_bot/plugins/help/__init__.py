@@ -1,5 +1,6 @@
 from nonebot import get_plugin_config, on_command
 from nonebot.adapters import Event, Message
+from nonebot.adapters.satori import MessageEvent
 from nonebot.params import CommandArg
 from nonebot.rule import Rule, to_me
 from nonebot import require
@@ -18,15 +19,10 @@ plugin_config = get_plugin_config(Config).bot_help
 async def is_enadle() -> bool:
     return plugin_config.plugin_enabled
 
-
-# 用户是否在黑名单
-async def is_blacklisted(event: Event) -> bool:
-    return True  # event.get_user_id() not in BLACKLIST
-
 bot_help = on_alconna(
         Alconna("帮助", Args["plugin_name?", str]),
         aliases={"help", "使用帮助"},
-        rule=to_me() & is_enadle & is_blacklisted,
+        rule=to_me() & is_enadle,
         priority=plugin_config.command_priority,
         block=True
         )
