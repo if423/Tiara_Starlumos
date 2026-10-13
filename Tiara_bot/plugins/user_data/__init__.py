@@ -12,7 +12,7 @@ from nonebot.adapters.satori.event import (
 
 from nonebot_plugin_orm import async_scoped_session
 from . import models
-from .service import user_updata, member_added, member_removed
+from .service import user_updata, member_add, member_remove
 
 __plugin_meta__ = PluginMetadata(
     name="user_data",
@@ -50,23 +50,36 @@ async def handle_function(bot: Bot, event: MessageEvent, session: async_scoped_s
     except Exception as e:
         logger.error(f"用户/群组信息同步失败:{e}")
 
+async def get_user_name(bot: Bot, user_id: str) -> str:
+    """通过 Satori API 获取用户昵称，失败时回退到用户 ID"""
+    try:
+        user: User = await bot.user_get(user_id=user_id)
+        return user.nick or user.name or user.id
+    except Exception as e:
+        logger.warning(f"获取用户 {user_id} 信息失败: {e}")
+        return user_id
+
 # 监听群成员加入事件
 member_added = on_notice(rule=lambda event: isinstance(event, GuildMemberAddedEvent))
 
 @member_added.handle()
-async def handle_member_added(bot: Bot, event: GuildMemberAddedEvent):
+async def handle_member_added(bot: Bot, event: GuildMemberAddedEvent, session: async_scoped_session):
     user = event.user
     guild = event.guild
-    member_added()
-    await member_added.send(f"欢迎新成员 {user.name} (ID: {user.id}) 加入群组 {guild.name}!")
+    name = await get_user_name(bot, user.id)
+    await member_add(session, user.id, guild.id)
+    msg = f"欢迎新成员 {name} (ID: {user.id}) 加入群组！"
+    await bot.send_message(guild.id, msg)
 
 # 监听群成员退出事件
 member_removed = on_notice(rule=lambda event: isinstance(event, GuildMemberRemovedEvent))
 
 @member_removed.handle()
-async def handle_member_removed(bot: Bot, event: GuildMemberRemovedEvent):
+async def handle_member_removed(bot: Bot, event: GuildMemberRemovedEvent, session: async_scoped_session):
     user = event.user
-    operator = event.operator  # 执行移除操作的用户（如果是主动退群，可能与 user 相同）
     guild = event.guild
-    member_removed()
-    await bot.send(f"成员 {user.name} (ID: {user.id}) 离开了群组 {guild.name}。"f"操作者: {operator.name if operator else '未知'}")
+    name = await get_user_name(bot, user.id)
+    await member_remove(session, user.id, guild.id)
+    msg = f"成员 {name} (ID: {user.id}) 离开了群组!"
+    await bot.send_message(guild.id, msg)
+    
